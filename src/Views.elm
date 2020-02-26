@@ -1,4 +1,4 @@
-module Views exposing (contentContainer, footer, masthead, todoEntry, todosList)
+module Views exposing (contentContainer, footer, masthead, todoEntry, todosList, todosSummary)
 
 import Array exposing (Array)
 import Data exposing (Todo, Todos)
@@ -10,7 +10,7 @@ import Html.Events exposing (onCheck, onInput)
 
 masthead : Html msg
 masthead =
-    h1 [] [ text "Elm Todo" ]
+    h1 [ class "font-serif text-center text-blue-900 text-6xl" ] [ text "Todos" ]
 
 
 footer : Html msg
@@ -27,12 +27,45 @@ todosList eventHandler todos =
         |> div []
 
 
+todosSummary : Todos -> Html msg
+todosSummary todos =
+    let
+        count =
+            todos
+                |> Array.filter (\todo -> todo.status == Data.Incomplete)
+                |> Array.length
+
+        label =
+            if count == 1 then
+                "item"
+
+            else
+                "items"
+    in
+    div
+        [ class "px-4 py-2"
+        , class "border-t text-sm"
+        ]
+        [ [ String.fromInt count, label, "Remaining" ]
+            |> String.join " "
+            |> text
+        ]
+
+
 todoRow : Int -> (Int -> Bool -> msg) -> Todo -> Html msg
 todoRow index eventHandler todo =
     div []
-        [ label [ class "text-2xl" ]
-            [ input [ type_ "checkbox", onCheck (eventHandler index) ] []
-            , text <| String.fromInt index ++ ". " ++ todo.label
+        [ label
+            [ class "flex items-center px-4 py-2"
+            , class "border-b text-2xl"
+            ]
+            [ input
+                [ class "mr-3"
+                , type_ "checkbox"
+                , onCheck (eventHandler index)
+                ]
+                []
+            , text todo.label
             ]
         ]
 
@@ -41,10 +74,10 @@ todoEntry : String -> (String -> msg) -> msg -> Html msg
 todoEntry label updateHandler submitHandler =
     div [ class "flex" ]
         [ input
-            [ class "flex-grow px-2 py-2"
-            , class "border-2 border-gray-600"
-            , class "rounded"
-            , class "text-gray-600"
+            [ class "flex-grow px-4 py-2"
+            , class "border-b-2 border-gray-600"
+            , class "text-gray-600 text-2xl"
+            , class "outline-none focus:border-blue-400"
             , placeholder "Add Todo"
             , onEnter submitHandler
             , onInput updateHandler
@@ -58,4 +91,9 @@ todoEntry label updateHandler submitHandler =
 
 contentContainer : Html msg -> Html msg
 contentContainer content =
-    div [ class "mx-12 my-3" ] [ content ]
+    div
+        [ class "bg-white"
+        , class "border border-gray-500 mx-4"
+        , class "shadow"
+        ]
+        [ content ]

@@ -8,3 +8,7 @@
 [data-elm-hot="true"] {
   height: inherit;
 }
+
+body {
+  background: #F7FAFC;
+}

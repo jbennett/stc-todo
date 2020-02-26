@@ -4,6 +4,7 @@ import Array
 import Browser
 import Data exposing (Todos)
 import Html exposing (Html, div)
+import Html.Attributes exposing (class)
 import Views
 
 
@@ -20,7 +21,7 @@ type alias Model =
 init : ( Model, Cmd Msg )
 init =
     ( { entryText = ""
-      , todos = Array.fromList [ Data.initTodo "Test", Data.initTodo "Foo" ]
+      , todos = Data.defaultTodos
       }
     , Cmd.none
     )
@@ -59,9 +60,17 @@ update msg model =
             ( { model | entryText = newLabel }, Cmd.none )
 
         EntrySubmitted ->
+            let
+                newTodos =
+                    if model.entryText /= "" then
+                        Array.push (Data.initTodo model.entryText) model.todos
+
+                    else
+                        model.todos
+            in
             ( { model
                 | entryText = ""
-                , todos = Array.push (Data.initTodo model.entryText) model.todos
+                , todos = newTodos
               }
             , Cmd.none
             )
@@ -76,15 +85,18 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ Views.masthead
-        , Views.contentContainer
-            (div []
-                [ Views.todoEntry model.entryText EntryUpdated EntrySubmitted
-                , Views.todosList TodoClicked model.todos
-                ]
-            )
-        , Views.footer
+    div [ class "flex flex-col items-center min-h-screen" ]
+        [ div [ class "mt-8 mb-16" ] [ Views.masthead ]
+        , div [ class "max-w-screen-md w-full" ]
+            [ Views.contentContainer
+                (div []
+                    [ Views.todoEntry model.entryText EntryUpdated EntrySubmitted
+                    , Views.todosList TodoClicked model.todos
+                    , Views.todosSummary model.todos
+                    ]
+                )
+            ]
+        , div [ class "mt-auto" ] [ Views.footer ]
         ]
 
 
