@@ -63,6 +63,13 @@ update msg model =
             , Cmd.none
             )
 
+        DeleteEntry index ->
+            let
+                newTodos =
+                    Helpers.removeAtIndex index model.todos
+            in
+            ( { model | todos = newTodos }, Cmd.none )
+
         NoOp ->
             ( model, Cmd.none )
 

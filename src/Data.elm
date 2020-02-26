@@ -17,6 +17,7 @@ type Msg
     = TodoClicked Int Bool
     | EntryUpdated String
     | EntrySubmitted
+    | DeleteEntry Int
     | NoOp
 
 

@@ -3,9 +3,9 @@ module Views exposing (contentContainer, footer, masthead, todoEntry, todosList,
 import Array exposing (Array)
 import Data exposing (Todo, Todos)
 import Helpers exposing (onEnter)
-import Html exposing (Html, a, div, h1, input, label, text)
+import Html exposing (Html, a, button, div, h1, input, label, text)
 import Html.Attributes exposing (class, href, placeholder, type_, value)
-import Html.Events exposing (onCheck, onInput)
+import Html.Events exposing (onCheck, onClick, onInput)
 
 
 masthead : Html msg
@@ -60,6 +60,15 @@ todosSummary todos =
 
 todoRow : Int -> Todo -> Html Data.Msg
 todoRow index todo =
+    let
+        colorClass =
+            case todo.status of
+                Data.Complete ->
+                    "text-gray-400"
+
+                Data.Incomplete ->
+                    "text-gray-800"
+    in
     div []
         [ label
             [ class "flex items-center px-4 py-2"
@@ -71,7 +80,12 @@ todoRow index todo =
                 , onCheck (Data.TodoClicked index)
                 ]
                 []
-            , text todo.label
+            , div [ class colorClass ] [ text todo.label ]
+            , button
+                [ class "ml-auto bg-yellow-500 px-2 text-white rounded border-2 border-yellow-500"
+                , onClick (Data.DeleteEntry index)
+                ]
+                [ text "-" ]
             ]
         ]
 
