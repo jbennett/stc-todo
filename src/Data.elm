@@ -33,7 +33,7 @@ type alias Todo =
 
 initTodo : String -> Todo
 initTodo label =
-    Todo label Incomplete 7
+    Todo label Incomplete 3
 
 
 toggleTodo : Todo -> Todo
@@ -50,6 +50,11 @@ defaultTodos : Todos
 defaultTodos =
     [ "Get 250ml tomato sauce"
     , "Try to take over the world"
+    , "See the Northern Lights"
+    , "Write a book"
+    , "Go skydiving"
+    , "Catch them all"
+    , "Do a STC Talk"
     ]
         |> List.map initTodo
         |> Array.fromList
