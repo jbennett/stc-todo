@@ -3,6 +3,7 @@ module Main exposing (init, main, update, view)
 import Array
 import Browser
 import Data exposing (Model, Msg(..))
+import Helpers
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
 import Views
