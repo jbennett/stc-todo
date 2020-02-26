@@ -1,8 +1,8 @@
-module Main exposing (Model, Msg(..), init, main, update, view)
+module Main exposing (init, main, update, view)
 
 import Array
 import Browser
-import Data exposing (Todos)
+import Data exposing (Model, Msg(..))
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
 import Views
@@ -10,12 +10,6 @@ import Views
 
 
 ---- MODEL ----
-
-
-type alias Model =
-    { entryText : String
-    , todos : Todos
-    }
 
 
 init : ( Model, Cmd Msg )
@@ -29,13 +23,6 @@ init =
 
 
 ---- UPDATE ----
-
-
-type Msg
-    = TodoClicked Int Bool
-    | EntryUpdated String
-    | EntrySubmitted
-    | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

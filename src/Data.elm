@@ -1,6 +1,27 @@
-module Data exposing (Status(..), Todo, Todos, defaultTodos, initTodo, toggleTodo)
+module Data exposing (Model, Msg(..), Status(..), Todo, Todos, defaultTodos, initTodo, toggleTodo)
 
 import Array exposing (Array)
+
+
+
+-- System
+
+
+type alias Model =
+    { entryText : String
+    , todos : Todos
+    }
+
+
+type Msg
+    = TodoClicked Int Bool
+    | EntryUpdated String
+    | EntrySubmitted
+    | NoOp
+
+
+
+-- Todos
 
 
 type alias Todo =
