@@ -3,8 +3,8 @@ module Views exposing (contentContainer, footer, masthead, todoEntry, todosList,
 import Array exposing (Array)
 import Data exposing (Todo, Todos)
 import Helpers exposing (onEnter)
-import Html exposing (Html, div, h1, input, label, text)
-import Html.Attributes exposing (class, placeholder, type_, value)
+import Html exposing (Html, a, div, h1, input, label, text)
+import Html.Attributes exposing (class, href, placeholder, type_, value)
 import Html.Events exposing (onCheck, onInput)
 
 
@@ -16,13 +16,19 @@ masthead =
 footer : Html msg
 footer =
     div []
-        [ text "Copyright © 2020 Jonathan Bennett" ]
+        [ text "Copyright © 2020 Jonathan Bennett ∙ "
+        , a [ href "https://jbennett.me" ] [ text "jbennett.me" ]
+        , text " ∙ "
+        , a [ href "https://github.com/jbennett" ] [ text "github" ]
+        , text " ∙ "
+        , a [ href "https://www.linkedin.com/in/jonathan-bennett-3a64bb22/" ] [ text "linkedin" ]
+        ]
 
 
-todosList : (Int -> Bool -> msg) -> Todos -> Html msg
-todosList eventHandler todos =
+todosList : Todos -> Html Data.Msg
+todosList todos =
     todos
-        |> Array.indexedMap (\index todo -> todoRow index eventHandler todo)
+        |> Array.indexedMap (\index todo -> todoRow index todo)
         |> Array.toList
         |> div []
 
@@ -52,8 +58,8 @@ todosSummary todos =
         ]
 
 
-todoRow : Int -> (Int -> Bool -> msg) -> Todo -> Html msg
-todoRow index eventHandler todo =
+todoRow : Int -> Todo -> Html Data.Msg
+todoRow index todo =
     div []
         [ label
             [ class "flex items-center px-4 py-2"
@@ -62,7 +68,7 @@ todoRow index eventHandler todo =
             [ input
                 [ class "mr-3"
                 , type_ "checkbox"
-                , onCheck (eventHandler index)
+                , onCheck (Data.TodoClicked index)
                 ]
                 []
             , text todo.label
@@ -70,8 +76,8 @@ todoRow index eventHandler todo =
         ]
 
 
-todoEntry : String -> (String -> msg) -> msg -> Html msg
-todoEntry label updateHandler submitHandler =
+todoEntry : String -> Html Data.Msg
+todoEntry label =
     div [ class "flex" ]
         [ input
             [ class "flex-grow px-4 py-2"
@@ -79,8 +85,8 @@ todoEntry label updateHandler submitHandler =
             , class "text-gray-600 text-2xl"
             , class "outline-none focus:border-blue-400"
             , placeholder "Add Todo"
-            , onEnter submitHandler
-            , onInput updateHandler
+            , onEnter Data.EntrySubmitted
+            , onInput Data.EntryUpdated
             , value label
             ]
             []

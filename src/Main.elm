@@ -77,8 +77,8 @@ view model =
         , div [ class "max-w-screen-md w-full" ]
             [ Views.contentContainer
                 (div []
-                    [ Views.todoEntry model.entryText EntryUpdated EntrySubmitted
-                    , Views.todosList TodoClicked model.todos
+                    [ Views.todoEntry model.entryText
+                    , Views.todosList model.todos
                     , Views.todosSummary model.todos
                     ]
                 )
