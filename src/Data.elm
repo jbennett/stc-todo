@@ -1,4 +1,4 @@
-module Data exposing (Model, Msg(..), Status(..), Todo, Todos, defaultTodos, initTodo, toggleTodo)
+module Data exposing (Model, Msg(..), Status(..), Todo, Todos, defaultTodos, initTodo, replaceTodo, toggleTodo)
 
 import Array exposing (Array)
 
@@ -44,6 +44,19 @@ toggleTodo todo =
 
         Incomplete ->
             { todo | status = Complete }
+
+
+replaceTodo : Todo -> Todo -> Todos -> Todos
+replaceTodo originalTodo newTodo todos =
+    todos
+        |> Array.map
+            (\todo ->
+                if todo == originalTodo then
+                    newTodo
+
+                else
+                    todo
+            )
 
 
 defaultTodos : Todos

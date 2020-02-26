@@ -21,6 +21,18 @@ init =
     , Cmd.none
     )
 
+getTomatos : Volume -> Weight
+getTomatos amount =
+    let 
+		ratio =
+			Quantity.per (Weight.grams 1000) (Volume.liters 1)
+	in
+		Quantity.times ratio amount
+
+Volume.milliliters 250
+	|> getTomatos
+	|> Debug.log 
+— prints 250 grams
 
 
 ---- UPDATE ----
@@ -31,16 +43,20 @@ update msg model =
     case msg of
         TodoClicked eventIndex checked ->
             let
-                updatedTodos =
-                    model.todos
-                        |> Array.indexedMap
-                            (\todoIndex todo ->
-                                if todoIndex == eventIndex then
-                                    Data.toggleTodo todo
+                targetTodo =
+                    Array.get eventIndex model.todos
 
-                                else
-                                    todo
-                            )
+                updatedTodo =
+                    Maybe.map Data.toggleTodo targetTodo
+
+                updatedTodos =
+                    Maybe.map2
+                        (\todo newTodo ->
+                            Data.replaceTodo todo newTodo model.todos
+                        )
+                        targetTodo
+                        updatedTodo
+                        |> Maybe.withDefault model.todos
             in
             ( { model | todos = updatedTodos }, Cmd.none )
 
