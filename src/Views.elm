@@ -83,7 +83,7 @@ todoRow index todo =
             , div [ class colorClass ] [ text todo.label ]
             , button
                 [ class "ml-auto bg-yellow-500 px-2 text-white rounded border-2 border-yellow-500"
-                , onClick (Data.DeleteEntry index)
+                , onClick (Data.DeleteEntry todo.favoriteNumber)
                 ]
                 [ text "-" ]
             ]
